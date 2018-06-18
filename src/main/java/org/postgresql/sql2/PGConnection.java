@@ -21,6 +21,7 @@ import org.postgresql.sql2.operations.PGOperationGroup;
 import org.postgresql.sql2.operations.PGValidationOperation;
 import org.postgresql.sql2.operations.helpers.PGTransaction;
 
+import java.nio.channels.Selector;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -384,6 +385,10 @@ public class PGConnection extends PGOperationGroup<Object, Object> implements Co
   public boolean isConnectionClosed() {
     return protocol.isConnectionClosed();
   }
+  
+  public void setSelector(Selector selector) {
+	  protocol.setSelector(selector);
+	  }
 
   public void setLifeCycleOpen() {
     Lifecycle oldLifecycle = lifecycle;
@@ -393,5 +398,21 @@ public class PGConnection extends PGOperationGroup<Object, Object> implements Co
       listener.lifecycleEvent(this, oldLifecycle, lifecycle);
     }
 
+  }
+
+  public void setIndex(int connectionIdx) {
+	  protocol.setIndex(connectionIdx);
+  }
+
+  public void read() {
+	protocol.readData();
+  }
+  
+  public void connectDb() {
+	protocol.connect();
+  }
+
+  public void processConnect() {
+	protocol.processConnect();
   }
 }

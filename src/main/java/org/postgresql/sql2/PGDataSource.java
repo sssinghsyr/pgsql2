@@ -47,11 +47,12 @@ public class PGDataSource implements DataSource {
 //      }
       while (selector.isOpen()) {
         try {
-			if(selector.select(1000) > 0) {
+			if(selector.selectNow() > 0) {
 				processSelectedKeys(selector.selectedKeys());
-			}else {
-				System.out.println("Timeout after 1 sec");
 			}
+//			else {
+//				System.out.println("Timeout after 1 sec");
+//			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

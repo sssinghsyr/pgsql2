@@ -47,7 +47,7 @@ public class PGDataSource implements DataSource {
 //      }
       while (selector.isOpen()) {
         try {
-			if(selector.selectNow() > 0) {
+			if(selector.select(1000) > 0) {
 				processSelectedKeys(selector.selectedKeys());
 			}
 //			else {

@@ -8,6 +8,7 @@ import org.postgresql.sql2.util.BinaryHelper;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DataRow implements Result.Row, Result.OutParameterMap {
   private Map<String, TableCell> columns;
@@ -52,7 +53,7 @@ public class DataRow implements Result.Row, Result.OutParameterMap {
 
   @Override
   public String[] getIdentifiers() {
-    return new String[0];
+    return columns.keySet().toArray(new String[columns.keySet().size()]);
   }
 
   @Override

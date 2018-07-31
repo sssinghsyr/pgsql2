@@ -143,7 +143,6 @@ public class ProtocolV3 {
 					socketChannel.connect(new InetSocketAddress((String) properties.get(PGConnectionProperties.HOST),
 							(Integer) properties.get(PGConnectionProperties.PORT)));
 					SelectionKey key = socketChannel.register(selector, SelectionKey.OP_READ | 
-							                                            SelectionKey.OP_WRITE | 
 							                                            SelectionKey.OP_CONNECT);
 					key.attach(index);
 				} catch (IOException e) {
@@ -487,5 +486,9 @@ public class ProtocolV3 {
 
 	public void setIndex(int i) {
 		this.index = i;
+	}
+
+	public Selector getSelector() {
+		return this.selector;
 	}
 }

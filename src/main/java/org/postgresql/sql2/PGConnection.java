@@ -388,8 +388,12 @@ public class PGConnection extends PGOperationGroup<Object, Object> implements Co
   
   public void setSelector(Selector selector) {
 	  protocol.setSelector(selector);
-	  }
+  }
 
+  public Selector getSelector() {
+	  return protocol.getSelector();
+  }
+  
   public void setLifeCycleOpen() {
     Lifecycle oldLifecycle = lifecycle;
     this.lifecycle = lifecycle.connect();

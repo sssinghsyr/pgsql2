@@ -25,7 +25,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class PGDataSource implements DataSource {
-  //private Queue<PGConnection> connections = new ConcurrentLinkedQueue<>();
   private ConcurrentHashMap<Integer,PGConnection> connections = new ConcurrentHashMap<Integer,PGConnection>();
   private boolean closed;
   private Map<ConnectionProperty, Object> properties;
@@ -42,17 +41,14 @@ public class PGDataSource implements DataSource {
 	}
     Executor executor = new ThreadPoolExecutor(1, 2, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
     executor.execute(() -> {
-//      for( PGConnection connection : connections.values()) {
-//    	  connection.connectDb();
-//      }
       while (selector.isOpen()) {
         try {
-			if(selector.selectNow() > 0) {
+			if(selector.select() > 0) {
 				processSelectedKeys(selector.selectedKeys());
 			}
-//			else {
-//				System.out.println("Timeout after 1 sec");
-//			}
+			else {
+				System.out.println("Write Event call");
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,11 +65,11 @@ public class PGDataSource implements DataSource {
 			if (key.isReadable()) {
 				connections.get(key.attachment()).read();
 			}
-			if (key.isWritable()) {
-				connections.get(key.attachment()).visit();
-			}
-			if (key.isConnectable()) {
+			else if (key.isConnectable()) {
 				connections.get(key.attachment()).processConnect();
+			}
+			else {
+				System.out.println("Unhandled Event!");
 			}
 		}
 	

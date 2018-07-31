@@ -83,6 +83,7 @@ public class PGCountOperation<R> implements ParameterizedCountOperation<R> {
     PGSubmission<R> submission = new CountSubmission<>(this::cancel, errorHandler, holder);
     submission.setSql(sql);
     connection.addSubmissionOnQue(submission);
+    connection.getSelector().wakeup(); // Work as a Write Event from the main thread
     return submission;
   }
 
